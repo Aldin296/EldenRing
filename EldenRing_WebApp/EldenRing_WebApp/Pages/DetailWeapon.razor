@@ -1,0 +1,97 @@
+﻿@page "/detailWeapon"
+@inject ApiService api
+@using EldenRing_WebApp.Data
+
+<MudGrid>
+	<MudItem xs="12" sm="6">
+		<MudText Typo="Typo.h4">@api.selectedWeapon.name</MudText>
+		<MudText>@api.selectedWeapon.description</MudText>
+		<MudText>Category: @api.selectedWeapon.category</MudText>
+		<MudText>@api.selectedWeapon.weight kg.</MudText>
+	</MudItem>
+	<MudItem xs="12" sm="6">
+		<MudImage Src="@api.selectedWeapon.image"></MudImage>
+	</MudItem>
+
+	<MudItem xs="12" sm="2">
+		<table>
+			<thead>
+				<tr>
+					<th>Attack</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var att in @api.selectedWeapon.attack)
+				{
+					<tr>
+						<td style="" align="left">@att.name</td>
+						<td style="" align="left">@att.amount</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</MudItem>
+	<MudItem xs="12" sm="2">
+		<table>
+			<thead>
+				<tr>
+					<th>Guard</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var att in @api.selectedWeapon.defence)
+				{
+					<tr>
+						<td style="" align="left">@att.name</td>
+						<td style="" align="left">@att.amount</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</MudItem>
+	<br />
+	<MudItem xs="12" sm="2">
+
+		<table>
+			<thead>
+				<tr>
+					<th>Guard</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var att in @api.selectedWeapon.scalesWith)
+				{
+					<tr>
+						<td style="" align="left">@att.name</td>
+						<td style="" align="left">@att.scaling</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</MudItem>
+	<MudItem xs="12" sm="2">
+
+		<table>
+			<thead>
+				<tr>
+					<th>Guard</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var att in @api.selectedWeapon.requiredAttributes)
+				{
+					<tr>
+						<td style="" align="left">@att.name</td>
+						<td style="" align="left">@att.amount</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</MudItem>
+</MudGrid>
+
+
+@code {
+
+
+}
