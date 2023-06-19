@@ -29,7 +29,7 @@ namespace EldenRing_API_Client
 	{
 		ObservableCollection<Weapon> weaponlist;
 		HttpClient client = new HttpClient();
-
+		string baseaddres = "http://localhost:8080/";
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -132,64 +132,11 @@ namespace EldenRing_API_Client
 
 		}
 
-
-
-		private void PostButton_Click(object sender, RoutedEventArgs e)
+		private void OpenPostMenuButton_Click(object sender, RoutedEventArgs e)
 		{
-
-			Weapon weapon = new Weapon()
-			{
-				name = txtName.Text,
-				image = txtImage.Text,
-				attack = new List<Attribute>
-				{
-					new Attribute(name: "physical", amount: int.Parse(txtAttacks_Phy.Text)),
-					new Attribute(name: "magic", amount: int.Parse(txtAttacks_Magic.Text)),
-					new Attribute(name: "fire", amount: int.Parse(txtAttacks_Fire.Text)),
-					new Attribute(name: "lightning", amount: int.Parse(txtAttacks_Ltng.Text)),
-					new Attribute(name: "holy", amount: int.Parse(txtAttacks_Holy.Text)),
-					new Attribute(name: "crit", amount: int.Parse(txtAttacks_Crit.Text)),
-				},
-				defence = new List<Attribute>
-				{
-					new Attribute(name: "physical", amount: int.Parse(txtDefence_Phy.Text)),
-					new Attribute(name: "magic", amount: int.Parse(txtDefence_Magic.Text)),
-					new Attribute(name: "fire", amount: int.Parse(txtDefence_Fire.Text)),
-					new Attribute(name: "lightning", amount: int.Parse(txtDefence_Ltng.Text)),
-					new Attribute(name: "holy", amount: int.Parse(txtDefence_Holy.Text)),
-					new Attribute(name: "crit", amount: int.Parse(txtDefence_Boost.Text)),
-				},
-
-				requiredAttributes = new List<Attribute>
-				{
-					new Attribute(name: "physical", amount: int.Parse(txtRequiredAttribute_Str.Text)),
-					new Attribute(name: "magic", amount: int.Parse(txtRequiredAttributes_Dex.Text)),
-					new Attribute(name: "fire", amount: int.Parse(txtRequiredAttributes_Int.Text)),
-					new Attribute(name: "lightning", amount: int.Parse(txtRequiredAttributes_Faith.Text)),
-					new Attribute(name: "holy", amount: int.Parse(txtRequiredAttributes_Arc.Text)),
-				},
-
-				scalesWith = new List<Scaling>
-				{
-					new Scaling(name: "strength", scaling: txtSclaesWith_Str.Text),
-					new Scaling(name: "dex", scaling: txtSclaesWith_Dex.Text),
-					new Scaling(name: "intelligence", scaling: txtSclaesWith_Int.Text),
-					new Scaling(name: "faith", scaling: txtSclaesWith_Faith.Text),
-					new Scaling(name: "arcane", scaling: txtSclaesWith_Arc.Text),
-				},
-				description = txtDescription.Text,
-				weight = float.Parse(txtWeight.Text),
-				category = txtCategory.Text,
-
-			};
-
-
-			client.BaseAddress = new Uri("http://localhost:8080/");
-			string json = JsonConvert.SerializeObject(weapon);
-			Console.WriteLine(json);
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-			var response = client.PostAsync("addWeapon", content).Result;
+			PostPage postPage = new PostPage();
+			postPage.ShowDialog();
+			weaponlist.Add(postPage.weapon);
 		}
 	}
 }

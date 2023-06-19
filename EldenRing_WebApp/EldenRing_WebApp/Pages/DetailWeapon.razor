@@ -2,93 +2,105 @@
 @inject ApiService api
 @using EldenRing_WebApp.Data
 
-<MudGrid>
-	<MudItem xs="12" sm="6">
-		<MudText Typo="Typo.h4">@api.selectedWeapon.name</MudText>
-		<MudText>@api.selectedWeapon.description</MudText>
-		<MudText>Category: @api.selectedWeapon.category</MudText>
-		<MudText>@api.selectedWeapon.weight kg.</MudText>
-	</MudItem>
-	<MudItem xs="12" sm="6">
-		<MudImage Src="@api.selectedWeapon.image"></MudImage>
-	</MudItem>
+<div style="text-align: center;">
+	<MudGrid>
+		<MudItem xl="12" lg="12" md="12" sm="12" xs="12">
+			<MudText Typo="Typo.h4">@api.selectedWeapon.name</MudText>
+			<MudText>@api.selectedWeapon.description</MudText>
+			<MudDivider Class="my-6"/>
+		</MudItem>
 
-	<MudItem xs="12" sm="2">
-		<table>
-			<thead>
-				<tr>
-					<th>Attack</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var att in @api.selectedWeapon.attack)
-				{
-					<tr>
-						<td style="" align="left">@att.name</td>
-						<td style="" align="left">@att.amount</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-	</MudItem>
-	<MudItem xs="12" sm="2">
-		<table>
-			<thead>
-				<tr>
-					<th>Guard</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var att in @api.selectedWeapon.defence)
-				{
-					<tr>
-						<td style="" align="left">@att.name</td>
-						<td style="" align="left">@att.amount</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-	</MudItem>
-	<br />
-	<MudItem xs="12" sm="2">
 
-		<table>
-			<thead>
-				<tr>
-					<th>Guard</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var att in @api.selectedWeapon.scalesWith)
-				{
-					<tr>
-						<td style="" align="left">@att.name</td>
-						<td style="" align="left">@att.scaling</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-	</MudItem>
-	<MudItem xs="12" sm="2">
+		<MudItem xl="12" lg="12" md="12" sm="12" xs="12">
+			<MudImage Src="@api.selectedWeapon.image"></MudImage>
+		</MudItem>
 
-		<table>
-			<thead>
-				<tr>
-					<th>Guard</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var att in @api.selectedWeapon.requiredAttributes)
-				{
+		<MudItem xl="12" lg="12" md="12" sm="12" xs="12">
+			<MudText>Category: @api.selectedWeapon.category</MudText>
+			<MudText>Weight: @api.selectedWeapon.weight kg.</MudText>
+		</MudItem>
+
+
+		<MudItem xl="4" lg="4" md="4" sm="0" xs="0"/>
+
+		<MudItem xl="2" lg="2" md="2" sm="5" xs="5">
+			<table>
+				<thead>
 					<tr>
-						<td style="" align="left">@att.name</td>
-						<td style="" align="left">@att.amount</td>
+						<th>Attack</th>
 					</tr>
-				}
-			</tbody>
-		</table>
-	</MudItem>
-</MudGrid>
+				</thead>
+				<tbody>
+					@foreach (var att in @api.selectedWeapon.attack)
+					{
+						<tr>
+							<td style="padding:0 50px 0 30px;" align="center">@att.name</td>
+							<td align="center"> @att.amount</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</MudItem>
+
+		<MudItem xl="6" lg="6" md="6" sm="5" xs="6">
+			<table>
+				<thead>
+					<tr>
+						<th>Guard</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var att in @api.selectedWeapon.defence)
+					{
+						<tr>
+							<td style=" padding:0 50px 0 50px;" align="left">@att.name</td>
+							<td align="center">@att.amount</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</MudItem>
+		<br />
+		<MudItem xl="4" lg="4" md="4" sm="0" xs="0" />
+		<MudItem xl="2" lg="2" md="2" sm="5" xs="5">
+			<table>
+				<thead>
+					<tr>
+						<th>Scaling</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var att in @api.selectedWeapon.scalesWith)
+					{
+						<tr>
+							<td style="padding:0 60px 0 30px;" align="left">@att.name</td>
+							<td style="" align="center">@att.scaling</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</MudItem>
+		<MudItem xl="6" lg="6" md="6" sm="5" xs="5">
+			<table>
+				<thead>
+					<tr>
+						<th style="padding: 0 0 0 50px">Required Attributes</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var att in @api.selectedWeapon.requiredAttributes)
+					{
+						<tr>
+							<td style="padding: 0 0 0 50px" width="176px" align="left">@att.name</td>
+							<td align="center">@att.amount</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</MudItem>
+	</MudGrid>
+</div>
+
 
 
 @code {

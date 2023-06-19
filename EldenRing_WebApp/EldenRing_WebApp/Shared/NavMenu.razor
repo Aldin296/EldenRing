@@ -1,34 +1,52 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">EldenRing_WebApp</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+	<div class="container-fluid">
+		<a class="navbar-brand" href="">EldenRing_WebApp</a>
+		<button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3"> 
-            <NavLink class="nav-link" href="weaponPage">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Weapons
-            </NavLink>
-        </div>
-    </nav>
+<div class="@NavMenuCssClass nav-scrollable">
+	<nav class="flex-column">
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+				<span class="oi oi-list-rich" aria-hidden="true"></span> Home
+			</NavLink>
+		</div>
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="weaponPage">
+				<span class="oi oi-list-rich" aria-hidden="true"></span> Weapons
+			</NavLink>
+		</div>
+		<div class="nav-item px-3">
+			<MudText style="color:#f7f7f7">
+				Theme Switcher
+				<MudGrid>
+					<MudItem>
+
+					</MudItem>
+				</MudGrid>
+				<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+				<MudIcon Icon="@Icons.Material.Filled.WbSunny"></MudIcon>
+				<MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" />
+			</MudText>
+
+		</div>
+	</nav>
 </div>
+
 
 @code {
-    private bool collapseNavMenu = true;
+	private MudTheme _theme = new();
+	private bool _isDarkMode;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+	private bool collapseNavMenu = true;
 
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+	private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+	private void ToggleNavMenu()
+	{
+		collapseNavMenu = !collapseNavMenu;
+	}
 }

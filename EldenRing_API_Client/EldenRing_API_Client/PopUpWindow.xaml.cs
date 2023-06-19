@@ -17,61 +17,62 @@ using System.Windows.Shapes;
 
 namespace EldenRing_API_Client
 {
-    /// <summary>
-    /// Interaktionslogik für PopUpWindow.xaml
-    /// </summary>
-    public partial class PopUpWindow : Window
-    {
-        Weapon selectedweapon = new Weapon();
-        ListView lw = new ListView();
-        ObservableCollection<Weapon> weaponsList;
+	/// <summary>
+	/// Interaktionslogik für PopUpWindow.xaml
+	/// </summary>
+	public partial class PopUpWindow : Window
+	{
+		Weapon selectedweapon = new Weapon();
+		ListView lw = new ListView();
+		ObservableCollection<Weapon> weaponsList;
+		HttpClient client = new HttpClient();
+		string baseaddres = "http://localhost:8080/";
+		public PopUpWindow(object weapon, ListView listView, ObservableCollection<Weapon> weapons)
+		{
+			client.BaseAddress = new Uri(baseaddres);
 
-        public PopUpWindow(object weapon, ListView listView, ObservableCollection<Weapon> weapons)
-        {
-            DataContext = weapon;
-            selectedweapon = weapon as Weapon;
-            lw = listView;
-            weaponsList = weapons;
-            InitializeComponent();
-        }
+			DataContext = weapon;
+			selectedweapon = weapon as Weapon;
+			lw = listView;
+			weaponsList = weapons;
+			InitializeComponent();
+		}
 
-        private void Details_Button_Click(object sender, RoutedEventArgs e)
-        {
-            DetailsWindow details = new DetailsWindow(selectedweapon);
-            details.Show();
-            Close();
-        }
+		private void Details_Button_Click(object sender, RoutedEventArgs e)
+		{
+			DetailsWindow details = new DetailsWindow(selectedweapon);
+			details.Show();
+			Close();
+		}
 
-        private void Update_Button_Click(object sender, RoutedEventArgs e)
-        {
-            UpdateWindow updateWindow = new UpdateWindow(selectedweapon);
-            updateWindow.Show();
-            Close();
-        }
+		private void Update_Button_Click(object sender, RoutedEventArgs e)
+		{
+			UpdateWindow updateWindow = new UpdateWindow(selectedweapon);
+			updateWindow.Show();
+			Close();
+		}
 
-        private async void Delete_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (lw.SelectedItem != null)
-            {
-                Weapon selectedWeapon = lw.SelectedItem as Weapon;
-                using (HttpClient client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("http://localhost:8080/");
+		private async void Delete_Button_Click(object sender, RoutedEventArgs e)
+		{
+			if (lw.SelectedItem != null)
+			{
+				Weapon selectedWeapon = lw.SelectedItem as Weapon;
 
-                    HttpResponseMessage response = await client.DeleteAsync("deleteWeapon/" + selectedWeapon.name);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        weaponsList.Remove(selectedWeapon);
-                        Console.WriteLine("Weapon deleted successfully.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error deleting weapon: " + response.StatusCode);
-                    }
-                }
-            }
-            Close();
 
-        }
-    }
+				HttpResponseMessage response = await client.DeleteAsync("deleteWeapon/" + selectedWeapon.name);
+				if (response.IsSuccessStatusCode)
+				{
+					weaponsList.Remove(selectedWeapon);
+					Console.WriteLine("Weapon deleted successfully.");
+				}
+				else
+				{
+					Console.WriteLine("Error deleting weapon: " + response.StatusCode);
+				}
+
+			}
+			Close();
+
+		}
+	}
 }

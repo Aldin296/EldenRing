@@ -2,101 +2,114 @@
 @inject ApiService api
 @inject NavigationManager navigationmanager;
 @using EldenRing_WebApp.Data
-
+@using Attribute=EldenRing_WebApp.Data.Attribute
 <h3>WeaponPage</h3>
-<Row>
-	<MudSelect @bind-Value="FilterSelect" Dense="true" T="string" Label="Filter" Variant="Variant.Text">
-		<MudSelectItem Value="@("Name")" />
-		<MudSelectItem Value="@("Category")" />
-		<MudSelectItem Value="@("Weight")" />
-	</MudSelect>
-	<div class="form__group field">
-		<InputText  class="form__field" @bind-Value="FilterText" @onkeyup="@Enter"></InputText>
-		<label for="name" class="form__label">Filter Text</label>
-	</div>
-	<!--<MudTextField T=string @ref="CoolesTextField" @onkeydown="@Enter"  Variant="Variant.Text"></MudTextField>-->
-</Row>
 
-<table class="table" style="overflow-x:auto;">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Description</th>
-			<th>Attack Stats</th>
-			<th>Defence Stats</th>
-			<th>Attribute Scaling</th>
-			<th>Required Attributes</th>
-			<th>Category</th>
-			<th>Weight (.Kg)</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var weapon in filteredWeapons)
-		{
-			<tr @onclick="(() => OpenDetailPage(weapon))">
-					<td>@weapon.name</td>
-					<td>@weapon.description</td>
-					<td>
-						<table>
-							<tbody>
-								@foreach (var att in weapon.attack)
-								{
-									<tr>
-										<td style="padding:0 15px 0 0px;" align="left">@att.name</td>
-										<td style="padding:0 0px 0 0px;" align="right">@att.amount</td>
-									</tr>
-								}
-							</tbody>
-						</table>
-					</td>
-					<td>
-						<table>
-							<tbody>
-								@foreach (var def in weapon.defence)
-								{
-									<tr>
-										<td style="padding:0 15px 0 0px;" align="left">@def.name</td>
-										<td style="padding:0 15px 0 15px;" align="right">@def.amount</td>
-									</tr>
-								}
-							</tbody>
-						</table>
-					</td>
-					<td>
-						<table>
-							<tbody>
-								@foreach (var sc in weapon.scalesWith)
-								{
-									<tr>
-										<td style="padding:0 15px 0 15px;" align="left">@sc.name </td>
-										<td style="padding:0 15px 0 15px;" align="right">@sc.scaling</td>
-									</tr>
-								}
-							</tbody>
-						</table>
-					</td>
-					<td>
-						<table>
-							<tbody>
-								@foreach (var req in weapon.requiredAttributes)
-								{
-									<tr>
-										<td style="padding:0 15px 0 15px;" align="left">@req.name </td>
-										<td style="padding:0 15px 0 15px;" align="right">@req.amount</td>
-									</tr>
-								}
-							</tbody>
-						</table>
-					</td>
-					<td>@weapon.category</td>
-					<td>@weapon.weight</td>				
-			</tr>
-		}
-	</tbody>
-</table>
 
+
+<MudTable Items="@weapons" Hover="true" T="Weapon" OnRowClick="@RowClicked" Filter="new Func<Weapon,bool>(FilterFunc1)" @bind-SelectedItem="selectedweapon">
+	<ToolBarContent>
+		<MudText Typo="Typo.h6">List of Weapons</MudText>
+		<MudSpacer />
+		<MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+	</ToolBarContent>
+	
+	<ColGroup>
+		<col />
+		<col style=" width: 300px" />
+		<col />
+		<col />
+		<col />
+		<col />
+		<col />
+		<col />
+	</ColGroup>
+
+	<HeaderContent>
+		<MudTh>Name</MudTh>
+		<MudTh>Description</MudTh>
+		<MudTh>Category</MudTh>
+		<MudTh>Weigth</MudTh>
+		<MudTh>Attack</MudTh>
+		<MudTh>Defence</MudTh>
+		<MudTh>Sclaing</MudTh>
+		<MudTh>Required Attributes</MudTh>
+	</HeaderContent>
+	<RowTemplate>
+		<MudTd DataLabel="name">@context.name</MudTd>
+		<MudTd DataLabel="Description">@context.description</MudTd>
+		<MudTd DataLabel="Category">@context.category</MudTd>
+		<MudTd DataLabel="Weigth">@context.weight</MudTd>
+		<MudTd DataLabel="Attack">
+			<MudStack>
+				<table>
+					<tbody>
+						@foreach (var att in context.attack)
+						{
+							<tr>
+								<td style="padding:0 20px 0 0;" align="left">@att.name</td>
+								<td style="padding:0 30px 0 0;" align="right">@att.amount</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</MudStack>
+		</MudTd>
+		<MudTd DataLabel="Defence">
+			<MudStack>
+				<table>
+					<tbody>
+						@foreach (var att in context.defence)
+						{
+							<tr>
+								<td style="padding:0 20px 0 0;" align="left">@att.name</td>
+								<td style="padding:0 30px 0 0;" align="right">@att.amount</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</MudStack>
+		</MudTd>
+		<MudTd DataLabel="Sclaing">
+			<MudStack>
+				<table>
+					<tbody>
+						@foreach (var att in context.scalesWith)
+						{
+							<tr>
+								<td style="padding:0 15px 0 0px;" align="left">@att.name</td>
+								<td style="padding:0 30px 0 0px;" align="right">@att.scaling</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</MudStack>
+		</MudTd>
+		<MudTd DataLabel="Required Attributes">
+			<MudStack>
+				<table>
+					<tbody>
+						@foreach (var att in context.requiredAttributes)
+						{
+							<tr>
+								<td style="padding:0 0px 0 0px;" align="left">@att.name</td>
+								<td style="padding:0 0px 0 0px;" align="right">@att.amount</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</MudStack>
+		</MudTd>
+	</RowTemplate>
+</MudTable>
 
 @code {
+
+	private void test()
+	{
+		Console.WriteLine("Test succses");
+	}
+
 	List<Weapon> weapons = new List<Weapon>();
 	List<Weapon> filteredWeapons = new List<Weapon>();
 	public string FilterText { get; set; } = "";
@@ -111,61 +124,34 @@
 		Console.WriteLine(weapons.Count);
 	}
 
-	public void Enter(KeyboardEventArgs e)
+
+	public void RowClicked(TableRowClickEventArgs<Weapon> w)
 	{
-		if (e.Code == "Enter" || e.Code == "NumpadEnter")
-		{
-			filteredWeapons.Clear();
-			foreach(Weapon w in weapons)
-			{
-				if (GetFilter().Invoke(w) == true)
-				{
-					filteredWeapons.Add(w);
-
-				}
-			}
-
-		}
-	}
-
-	public Predicate<object> GetFilter()
-	{
-		switch (FilterSelect)
-		{
-			case "Name":
-				return NameFilter;
-			case "Category":
-				return CategoryFilter;
-			case "Weight":
-				return WeightFilter;
-		}
-
-		return NameFilter; //Default Filter
-	}
-
-	public bool NameFilter(object obj)
-	{
-		Weapon filterobject = obj as Weapon;
-
-		return filterobject?.name?.Contains(FilterText) == true;
-	}
-
-	public bool CategoryFilter(object obj)
-	{
-		Weapon filterobject = obj as Weapon;
-		return filterobject?.category?.Contains(FilterText) == true;
-	}
-
-	public bool WeightFilter(object obj)
-	{
-		Weapon filterobject = obj as Weapon;
-		return filterobject?.weight?.ToString()?.Contains(FilterText) == true;
-	}
-
-	public void OpenDetailPage(Weapon weapon)
-	{
-		Console.WriteLine(weapon.name);
+		Weapon weapon = selectedweapon;
 		api.selectedWeapon = weapon;
 		navigationmanager.NavigateTo("/detailWeapon");
+	}
+
+
+	private string searchString = "";
+	private Weapon selectedweapon = null;
+
+	private List<Weapon> Elements = new List<Weapon>();
+
+
+	private bool FilterFunc1(Weapon element) => FilterFunc(element, searchString);
+
+	private bool FilterFunc(Weapon element, string searchString)
+	{
+		if (string.IsNullOrWhiteSpace(searchString))
+			return true;
+		if (element.name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		if (element.category.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+		if (element.weight.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+			return true;
+
+		return false;
 	}
 }

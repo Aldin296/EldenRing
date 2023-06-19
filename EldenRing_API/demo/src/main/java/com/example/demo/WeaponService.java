@@ -38,8 +38,10 @@ public class WeaponService
 
     public void updateWeapon(String name, Weapon weapon)
     {
-        this.weaponRepository.save(weapon);
         this.weaponRepository.deleteWeaponByName(name);
+        this.weaponRepository.save(weapon);
+        System.out.println( "Deleted weapon: " + name);
+        System.out.println("Updated Weapon: "+weapon.getName());
     }
 
 }

@@ -1,6 +1,62 @@
 ﻿@page "/"
+@inject ApiService api
+@inject NavigationManager navigationmanager;
+@using EldenRing_WebApp.Data
+
 
 <PageTitle>Index</PageTitle>
-<h1>Elden Ring Weapon WebApp</h1>
-<MudText >Here you can find all the current Elden Ring weapons! :)</MudText>
-<MudImage Src="Images/eldenring_image.jpg"  Alt="Elden Ring" Elevation="25" Class="rounded-lg ma-4" />
+<h1 style="text-align:center">Elden Ring Weapon WebApp</h1>
+<MudText Align="Align.Center">
+	Here you can find all the current Weapons of Elden Ring
+	<br />
+	If you dont know what Elden Ring is and want to find out more click the link below:
+	<br />
+	<a class="btn-link" href="https://de.bandainamcoent.eu/elden-ring/elden-ring">Elden Ring Homepage</a>
+</MudText>
+
+<br />
+<br />
+
+<MudGrid>
+	<MudGrid Spacing="3">
+		@foreach (Weapon w in weapons)
+		{
+			<MudItem  xl="4" lg="4" md="4" sm="6" xs="12">
+				<MudCard style="height:100%">
+					<div style="width: 200px;">
+						<MudCardMedia Image="@w.image" Height="200" />
+					</div>
+					<MudCardContent>
+						<MudText Typo="Typo.h5">@w.name</MudText>
+						<MudText Typo="Typo.body2">@w.description</MudText>
+					</MudCardContent>
+					<MudCardActions>
+						<MudButton OnClick="@((e) => InspectWeapon(e, w))" Variant="Variant.Text" Color="Color.Primary">More</MudButton>
+					</MudCardActions>
+				</MudCard>
+			</MudItem>
+
+
+		}
+	</MudGrid>
+</MudGrid>
+
+
+@code
+{
+	List<Weapon> weapons = new List<Weapon>();
+	private bool autocycle = true;
+	private Transition transition = Transition.Slide;
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		weapons = await api.GetWeaponData();
+	}
+
+	public void InspectWeapon(MouseEventArgs e, Weapon weapon)
+	{
+		api.selectedWeapon = weapon;
+		navigationmanager.NavigateTo("/detailWeapon");
+	}
+}

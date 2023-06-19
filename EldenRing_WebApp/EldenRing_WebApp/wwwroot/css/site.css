@@ -19,7 +19,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -67,7 +67,7 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-.table{
+.table {
     display: block;
     overflow-x: auto;
     width: 100%;
@@ -142,19 +142,33 @@ a, .btn-link {
     box-shadow: none;
 }
 
- tr:hover, tr:focus-within {
-	 background: #f2f3ff;
-	 outline: none;
-}
- td > a:first-child {
-	 display: flex;
-	 padding: 18px;
-	 text-decoration: none;
-	 color: inherit;
-	 z-index: 0;
-}
- td > a:first-child:focus {
-	 outline: 0;
+
+td > a:first-child {
+    display: flex;
+    padding: 18px;
+    text-decoration: none;
+    color: inherit;
+    z-index: 0;
 }
 
+    td > a:first-child:focus {
+        outline: 0;
+    }
 
+.imageviewer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.selected {
+    background-color: #1E88E5 !important;
+}
+
+    .selected > td {
+        color: white !important;
+    }
+
+        .selected > td .mud-input {
+            color: white !important;
+        }

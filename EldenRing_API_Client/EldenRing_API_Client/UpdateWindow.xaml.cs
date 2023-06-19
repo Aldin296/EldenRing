@@ -26,10 +26,14 @@ namespace EldenRing_API_Client
         List<Weapon> weapons = new List<Weapon>();
         Weapon weapon;
 		HttpClient client = new HttpClient();
+        string baseaddres = "http://localhost:8080/";
+		string name_before_update = "";
 
 		public UpdateWindow(object selectedWeapon)
         {
-            InitializeComponent();
+			client.BaseAddress = new Uri(baseaddres);
+
+			InitializeComponent();
             weapon = selectedWeapon as Weapon;
 			DataContext = selectedWeapon;
 
@@ -39,24 +43,39 @@ namespace EldenRing_API_Client
             DefenceDataGrid.ItemsSource = weapons;
             RequiredAttributeDataGrid.ItemsSource = weapons;
             ScalingDataGrid.ItemsSource = weapons;
-		}
+
+            Console.WriteLine("Updated Weapon:"+ weapon.name);
+        }
 
 
-		private void UpdateButton_Click_1(object sender, RoutedEventArgs e)
+		private void UpdateButton_Click(object sender, RoutedEventArgs e)
 		{
-            var a = weapons[0];
             UpdateCall();
 
 		}
 
-        private void UpdateCall()
+        private async void UpdateCall()
         {
-			client.BaseAddress = new Uri("http://localhost:8080/");
 			string json = JsonConvert.SerializeObject(weapon);
 			Console.WriteLine(json);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-			var response = client.PostAsync("updateWeapon/" + weapon.name, content).Result;
+			HttpResponseMessage response = await client.PutAsJsonAsync("updateWeapon/" + name_before_update, weapon);
+
+			if (response.IsSuccessStatusCode)
+			{
+				Console.WriteLine("Weapon updated successfully.");
+			}
+			else
+			{
+				Console.WriteLine("Error updating weapon: " + response.StatusCode);
+			}
+		}
+
+		private void txtName_GotFocus(object sender, RoutedEventArgs e)
+		{
+			name_before_update = txtName.Text;
+
 		}
 	}
 }
