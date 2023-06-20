@@ -172,9 +172,13 @@ If you prefer a Dark-Theme you can flip the witch on the left side.
 
 ![](web-theme.png)
 
-# Quellen
+# Sources
 https://mudblazor.com/docs/overview
+
 https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient
+
 https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/how-to?pivots=dotnet-8-0
+
 https://wpf-tutorial.com/listview-control/listview-filtering/
+
 https://github.com/deliton/eldenring-api/tree/main/api/public/data
